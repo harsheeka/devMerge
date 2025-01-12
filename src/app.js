@@ -2,7 +2,7 @@ const express = require("express");
 
 const app = express();
 
-app.get("/user",(req,res)=>{
+app.get("/us*er",(req,res)=>{
     res.send({
         firstname: "harshika", lastname: "arya"
     });
