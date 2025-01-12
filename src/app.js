@@ -16,6 +16,10 @@ app.delete("/user",(req,res)=>{
     res.send("data deleted sucessfully")
 });
 
+app.patch("/user",(req,res)=>{
+    res.send("Updated sucessfully");
+});
+
 app.use("/test",(req,res)=>{
     res.send("Routes are working");
 });
