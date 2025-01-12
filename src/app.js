@@ -2,27 +2,12 @@ const express = require("express");
 
 const app = express();
 
-app.get("/user/:userID",(req,res)=>{
-    console.log(req.params);
-    res.send({
-        firstname: "harshika", lastname: "arya"
-    });
-});
-
-app.post("/user",(req,res)=>{
-    res.send("Data added successfully");
-});
-
-app.delete("/user",(req,res)=>{
-    res.send("data deleted sucessfully")
-});
-
-app.patch("/user",(req,res)=>{
-    res.send("Updated sucessfully");
-});
-
-app.use("/test",(req,res)=>{
-    res.send("Routes are working");
+app.use("/user",(req,res,next)=>{
+    res.send("response 1");
+    next();
+},
+(req,res)=>{
+    res.send("response 2");
 });
 
 app.listen("7777", ()=> {
