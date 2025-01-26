@@ -1,6 +1,7 @@
 const express = require("express"); 
 const adminAuth = require("./middlewares/auth");
 const connectDB = require("./config/database");
+const User = require("./models/user");
 
 const app = express();
 connectDB()
@@ -14,13 +15,15 @@ connectDB()
     }
 );
 
-app.use("/admin", adminAuth, (req,res)=>{
-    res.send("hello");
-});
-
-app.use("/", (err,req,res,next)=>{
-    if(err){
-        res.status(500).send("error found");
-    }
+app.post("/signup", async (req,res)=>{
+    const userObj = {
+        firstName : "Harshika",
+        lastName : "Arya",
+        age : 21,
+        gender : "F",
+    };
+    const user = User(userObj);
+    await user.save();
+    res.send("User Added Sucessfully");
 })
 
