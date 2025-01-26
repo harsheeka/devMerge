@@ -1,13 +1,9 @@
 const express = require("express"); 
-
+const adminAuth = require("./middlewares/auth");
 const app = express();
 
-app.use("/user",(req,res,next)=>{
-    res.send("response 1");
-    next();
-},
-(req,res)=>{
-    res.send("response 2");
+app.use("/admin", adminAuth, (req,res,)=>{
+    res.send("hello");
 });
 
 app.listen("7777", ()=> {
