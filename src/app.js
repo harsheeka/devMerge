@@ -1,8 +1,8 @@
 const express = require("express"); 
 const adminAuth = require("./middlewares/auth");
-const app = express();
 const connectDB = require("./config/database");
 
+const app = express();
 connectDB()
 .then(
     ()=>{
