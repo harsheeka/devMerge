@@ -1,6 +1,9 @@
 const express = require("express"); 
 const adminAuth = require("./middlewares/auth");
 const app = express();
+const connectDB = require("./config/database");
+
+connectDB();
 
 app.use("/admin", adminAuth, (req,res)=>{
     res.send("hello");
@@ -12,6 +15,6 @@ app.use("/", (err,req,res,next)=>{
     }
 })
 
-app.listen("7777", ()=> {
+app.listen(7777, ()=> {
    console.log("Server is listening");
 });
