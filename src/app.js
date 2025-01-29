@@ -6,6 +6,41 @@ const app = express();
 
 app.use(express.json());
 
+app.get("/user", async (req,res) => {
+    try{
+        const userfirstName = req.body.firstName;
+        const users = await  User.find({
+            firstName : userfirstName
+        })
+        if(users.length===0){
+            res.status(404).send("User not found");
+        }
+        else{
+            res.send(users);
+        }
+        
+    }
+    catch(err) {
+        res.status(404).send("Some error occured");
+    }
+})
+
+app.get("/feed", async (req,res)=> {
+    try{
+        const users = await User.find({});
+        if(users.length==0){
+            res.status(404).send("Users not found");
+        }
+        else{
+            res.status(200).send(users);
+        }
+    }
+    catch(err) {
+        res.send(404).send("Error occured");
+    }
+})
+
+
 app.post("/signup", async (req,res)=>{
     const user = User(req.body);
     await user.save();
