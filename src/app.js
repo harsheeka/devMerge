@@ -2,8 +2,17 @@ const express = require("express");
 const adminAuth = require("./middlewares/auth");
 const connectDB = require("./config/database");
 const User = require("./models/user");
-
 const app = express();
+
+app.use(express.json());
+
+app.post("/signup", async (req,res)=>{
+    const user = User(req.body);
+    await user.save();
+    res.send("User Added Sucessfully");
+})
+
+
 connectDB()
 .then(
     ()=>{
@@ -14,16 +23,4 @@ connectDB()
 
     }
 );
-
-app.post("/signup", async (req,res)=>{
-    const userObj = {
-        firstName : "Harshika",
-        lastName : "Arya",
-        age : 21,
-        gender : "F",
-    };
-    const user = User(userObj);
-    await user.save();
-    res.send("User Added Sucessfully");
-})
 
