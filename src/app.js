@@ -24,6 +24,16 @@ app.get("/user", async (req,res) => {
         res.status(404).send("Some error occured");
     }
 })
+app.delete("/user", async (req,res) => {
+    try{
+        const userID = req.body.userID;
+        const user = await User.findByIdAndDelete(userID);
+        res.status(200).send("User Deleted Successfully");
+
+    }catch(err) {
+        res.status(404).send("Some error occured");
+    }
+})
 
 app.get("/feed", async (req,res)=> {
     try{
@@ -46,7 +56,6 @@ app.post("/signup", async (req,res)=>{
     await user.save();
     res.send("User Added Sucessfully");
 })
-
 
 connectDB()
 .then(
