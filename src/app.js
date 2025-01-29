@@ -35,6 +35,18 @@ app.delete("/user", async (req,res) => {
     }
 })
 
+app.patch("/user", async (req,res)=> {
+    try{
+        const userID = req.body.userID;
+        const data = req.body;
+        await User.findByIdAndUpdate(userID,data);
+        res.status(200).send("User Updated Successfully");
+
+    }catch(err) {
+        res.status(404).send("Some error occured");
+    }
+})
+
 app.get("/feed", async (req,res)=> {
     try{
         const users = await User.find({});
