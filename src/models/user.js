@@ -40,6 +40,8 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "https://img.freepik.com/free-psd/contact-icon-illustration-isolated_23-2151903337.jpg?t=st=1738485039~exp=1738488639~hmac=a6d4ad150136d5c05c4ed5650a2f58e17b1c3b0fb961bc89eb9f7ecdf39afc06&w=740"
     }
+}, {
+    timestamps: true,
 });
 
 module.exports = mongoose.model("User",userSchema);
