@@ -35,11 +35,15 @@ app.delete("/user", async (req,res) => {
     }
 })
 
-app.patch("/user", async (req,res)=> {
+app.patch("/user/:userID", async (req,res)=> {
     try{
-        const userID = req.body.userID;
+        const userID = req.params?.userID;
         const data = req.body;
         const ALLOWED_UPDATES = ["userID","photoUrl","about","age","gender","skills"];
+
+        if(!userID){
+            return res.send("UserID is required");
+        }
         const isUpdateAllowed = Object.keys(data).every(k=> ALLOWED_UPDATES.includes(k));
         if(!isUpdateAllowed){
             res.status(404).send("Update is not allowed");
@@ -48,7 +52,9 @@ app.patch("/user", async (req,res)=> {
         res.status(200).send("User Updated Successfully");
 
     }catch(err) {
-        res.status(404).send("Some error occured");
+        if (!res.headersSent) { // Prevents multiple responses
+            res.status(500).json({ error: "Internal Server Error", details: err.message });
+        }
     }
 })
 
