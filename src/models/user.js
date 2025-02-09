@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const validator = require("validator");
 
 const userSchema = new mongoose.Schema({
     firstName : {
@@ -28,6 +29,11 @@ const userSchema = new mongoose.Schema({
         unique: true,
         lowercase: true,
         trim: true,
+        validate(value){
+            if(!validator.isEmail(value)){
+                throw new Error("Invalid Email");
+            }
+        }
     },
     about : {
         type: String,
@@ -39,7 +45,11 @@ const userSchema = new mongoose.Schema({
     photoUrl : {
         type: String,
         default: "https://img.freepik.com/free-psd/contact-icon-illustration-isolated_23-2151903337.jpg?t=st=1738485039~exp=1738488639~hmac=a6d4ad150136d5c05c4ed5650a2f58e17b1c3b0fb961bc89eb9f7ecdf39afc06&w=740"
-    }
+    },
+    password : {
+        type: String,
+        required: true,
+    },
 }, {
     timestamps: true,
 });

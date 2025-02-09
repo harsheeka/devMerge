@@ -3,6 +3,7 @@ const adminAuth = require("./middlewares/auth");
 const connectDB = require("./config/database");
 const User = require("./models/user");
 const app = express();
+const validator = require("validator");
 
 app.use(express.json());
 
@@ -75,9 +76,14 @@ app.get("/feed", async (req,res)=> {
 
 
 app.post("/signup", async (req,res)=>{
-    const user = User(req.body);
+    try{
+        const user = User(req.body);
     await user.save();
     res.send("User Added Sucessfully");
+    } catch(err){
+        res.send("Error:"+err);
+    }
+    
 })
 
 connectDB()
