@@ -5,6 +5,7 @@ const User = require("./models/user");
 const app = express();
 const validator = require("validator");
 const { validateSignUpData } = require("./utils/validation");
+const bcrypt = require("bcrypt");
 
 app.use(express.json());
 
@@ -86,19 +87,17 @@ app.get("/feed", async (req, res) => {
 
 app.post("/signup", async (req, res) => {
   try {
-
     const {
-        firstName = "",
-        lastName = "",
-        emailID = "",
-        password = "",
-        photoUrl = "",
-        skills = [],
-        age,
-        gender = "",
-        about = "",
+      firstName = "",
+      lastName = "",
+      emailID = "",
+      password = "",
+      photoUrl = "",
+      skills = [],
+      age,
+      gender = "",
+      about = "",
     } = req.body;
-
 
     //step-1: validate data
     const validationResult = validateSignUpData(req);
@@ -107,12 +106,48 @@ app.post("/signup", async (req, res) => {
     }
     //step-2: encrypt the password
 
-    const passwordHash = await bcrypt.hash(password,10);
+    const passwordHash = await bcrypt.hash(password, 10);
     //step-3 create user
 
-    const user = new User({firstName,lastName,emailID, password: passwordHash, photoUrl,skills,age,gender,about});
+    const user = new User({
+      firstName,
+      lastName,
+      emailID,
+      password: passwordHash,
+      photoUrl,
+      skills,
+      age,
+      gender,
+      about,
+    });
     await user.save();
     res.send("User Added Sucessfully");
+  } catch (err) {
+    res.send("Error:" + err);
+  }
+});
+
+app.post("/login", async (req, res) => {
+  try {
+    const { emailID, password } = req.body;
+    if(!validator.isEmail(emailID)) {
+      return res.send("Invalid email address.");
+    }
+   
+    const user = await User.findOne({ emailID });
+    if (!user) {
+      return res.send("Invalid credentienals");
+    }
+
+    const isPassword = await bcrypt.compare(password,user.password);
+
+    if(!isPassword){
+        return res.send("Invalid credentienals");
+    }else{
+        return res.send("Login Sucessful.");
+    }
+    
+
   } catch (err) {
     res.send("Error:" + err);
   }
