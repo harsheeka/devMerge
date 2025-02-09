@@ -86,13 +86,31 @@ app.get("/feed", async (req, res) => {
 
 app.post("/signup", async (req, res) => {
   try {
+
+    const {
+        firstName = "",
+        lastName = "",
+        emailID = "",
+        password = "",
+        photoUrl = "",
+        skills = [],
+        age,
+        gender = "",
+        about = "",
+    } = req.body;
+
+
     //step-1: validate data
     const validationResult = validateSignUpData(req);
     if (!validationResult.success) {
       return res.status(400).json({ errors: validationResult.errors });
     }
     //step-2: encrypt the password
-    const user = User(req.body);
+
+    const passwordHash = await bcrypt.hash(password,10);
+    //step-3 create user
+
+    const user = new User({firstName,lastName,emailID, password: passwordHash, photoUrl,skills,age,gender,about});
     await user.save();
     res.send("User Added Sucessfully");
   } catch (err) {
