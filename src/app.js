@@ -42,6 +42,10 @@ app.patch("/user/:userID", async (req,res)=> {
         const data = req.body;
         const ALLOWED_UPDATES = ["userID","photoUrl","about","age","gender","skills"];
 
+        if(Array.isArray(data?.skills) && data.skills.length > 10){
+            return res.send("Skills can't be more than 10");
+        }
+
         if(!userID){
             return res.send("UserID is required");
         }
